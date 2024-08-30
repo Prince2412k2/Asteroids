@@ -5,6 +5,7 @@ from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from shot import Shot
 from health import Healthbar
+from score import Score
 
 
 def main() -> None:
@@ -24,13 +25,14 @@ def main() -> None:
     Asteroid.containers = (updatable, drawable, asteroid)
     Shot.containers = (updatable, drawable, shots)
     Healthbar.containers = drawable
+    Score.containers = drawable
 
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
     asteroid_field = AsteroidField()
     healthbar = Healthbar()
+    score = Score()
 
     running = True
-
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -52,7 +54,8 @@ def main() -> None:
             for bullet in shots:
                 if items.collision(bullet):
                     bullet.kill()
-                    items.split()
+                    if items.split():
+                        score.increse()
 
         pygame.display.flip()
         dt = clock.tick(60) / 1000
